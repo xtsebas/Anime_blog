@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Button Counter Example</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        .counter { font-size: 20px; }
+    </style>
+</head>
+<body style="background-color: violet;">
+    <div id="root"></div>
+    <script type="text/babel">
+        const getPosts = async () => {
+            const apiResponse = await fetch('https://api.tiburoncin.lat/22295/posts')
+            console.log('Response good', apiResponse)
+            console.log(React.version)
+        }   
+        
+
+        const Head=()=>{
+            const styles={
+                width:'80%',
+                fontSize: '100px',
+                marginBottom: '10px',
+                display: 'flex',
+                justifyContent:'center',
+            }
+            return(
+                <header style={styles}>
+                    Anime List
+                </header>
+            )
+        }
+
+        const Nav = ()=> {
+            const styles={
+                marginBottom: '10px',
+                backgroundColor: 'white',
+                width:'80%',
+                display: 'flex',
+                justifyContent:'center',
+            }
+            return(
+                <nav style={styles}>
+                    navigator
+                </nav>
+            )
+        }
+
+        const Posts = ()=> {
+            const styles={
+                width:'80%',
+                marginBottom: '10px',
+                display: 'flex',
+                justifyContent:'center',
+            }
+
+            const [posts, setPosts] = React.useState([]);
+
+            if (posts.lenght === 0){
+                return (
+                    <ul>
+                        Loading...
+                    </ul>
+                )
+            }
+
+            return(
+                <section style={styles}>
+                    <ul>
+                        a
+                    </ul>
+                </section>
+            )
+        }
+
+        const Footer = ()=> {
+            const styles={
+                width:'80%',
+                display: 'flex',
+                justifyContent:'center',
+            }
+            return(
+                <footer style={styles}>
+                    Footer
+                </footer>
+            )
+        }
+
+
+        
+        const App = () => {         
+            const styles={
+                width:'100%',
+                height:'100%',
+                display: 'flex',
+                alignItems:'center',
+                flexDirection:'column'
+            };
+            
+            React.useEffect(()=>{
+                getPosts()
+            },[]);
+
+            return (
+                <main style={styles}>
+                    <Head/>
+                    <Nav/>
+                    <Posts/>
+                    <Footer/>
+                </main>
+            )
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'))
+        root.render(<App />)
+    </script>
+</body>
+</html>
