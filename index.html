@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Button Counter Example</title>
+    <title>AnimeList</title>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -10,23 +10,21 @@
         .counter { font-size: 20px; }
     </style>
 </head>
-<body style="background-color: violet;">
-    <div id="root"></div>
+<body style="background-image: url(./gibhli.gif); background-size:cover; background-repeat: no-repeat;">
+    <div id="root" style="display: flex; justify-content: center;"></div>
     <script type="text/babel">
-        const getPosts = async () => {
-            const apiResponse = await fetch('https://api.tiburoncin.lat/22295/posts')
-            console.log('Response good', apiResponse)
-            console.log(React.version)
-        }   
+        import PropTypes from 'prop-types';
         
-
         const Head=()=>{
             const styles={
-                width:'80%',
+                width:'100%',
                 fontSize: '100px',
                 marginBottom: '10px',
                 display: 'flex',
                 justifyContent:'center',
+                background: 'rgb(1,117,255)',
+                background: 'linear-gradient(90deg, rgba(1,117,255,1) 20%, rgba(74,21,221,1) 64%)',
+                borderRadius: '20px',
             }
             return(
                 <header style={styles}>
@@ -38,29 +36,82 @@
         const Nav = ()=> {
             const styles={
                 marginBottom: '10px',
-                backgroundColor: 'white',
-                width:'80%',
+                backgroundColor: 'rgb(169, 14, 196)',
+                width: '50%',
                 display: 'flex',
-                justifyContent:'center',
+                padding:'20px',
+                justifyContent: 'space-between',     
             }
             return(
                 <nav style={styles}>
-                    navigator
+                    
+                    <a href="#home">Inicio</a>
+                    <div>|</div>
+                    <a href="#about">Nuevo Post</a>
+                    <div>|</div>
+                    <a href="#services">Sesion</a>
+                    
                 </nav>
             )
         }
 
+        const PostItem = ({ post }) => {
+            const getRandomColor = () => {
+                const first = Math.floor(Math.random() * 256);
+                const second = Math.floor(Math.random() * 256);
+                const third = Math.floor(Math.random() * 256);
+
+                const color = `rgb(${first},${second},${third}, 0.4)`;
+                return color;
+            };
+
+            const styles = {
+                border: '1px solid #ccc',
+                borderRadius: '5px',
+                padding: '10px',
+                marginBottom: '10px',
+                width:'50%',
+                display:'flex',
+                alignItems:'center',
+                flexDirection:'column',
+                backgroundColor: getRandomColor(),
+            };
+
+            return (
+                <div style={styles}>
+                    <h2>{post.title}</h2>
+                    <p>{post.sinopsis}</p>
+                    <p>{post.gender}</p>
+                </div>
+            );
+        };
+
         const Posts = ()=> {
             const styles={
-                width:'80%',
+                width:'100%',
                 marginBottom: '10px',
                 display: 'flex',
-                justifyContent:'center',
+                flexDirection:'column',
+                alignItems:'center',
             }
 
             const [posts, setPosts] = React.useState([]);
 
-            if (posts.lenght === 0){
+            const getPosts = async () => {
+                const apiResponse = await fetch('https://api.tiburoncin.lat/22295/posts')
+                const jsonPosts = await apiResponse.json() 
+                console.log(jsonPosts) 
+                setPosts(jsonPosts)
+            }   
+
+                        
+            React.useEffect(()=>{
+                getPosts()
+            },[]);
+
+
+            //debugger;
+            if (posts.length === 0){
                 return (
                     <ul>
                         Loading...
@@ -70,22 +121,37 @@
 
             return(
                 <section style={styles}>
-                    <ul>
-                        a
-                    </ul>
+                    {posts.map(post => (
+                        <PostItem key={post.id} post={post} />
+                    ))}
                 </section>
             )
         }
 
         const Footer = ()=> {
             const styles={
-                width:'80%',
+                width:'97%',
+                height:'50%',
+                padding:'20px',
+                borderRadius: '20px',
                 display: 'flex',
-                justifyContent:'center',
+                justifyContent:'space-between',
+                background: 'rgb(1,117,255)',
+                background: 'linear-gradient(90deg, rgba(1,117,255,1) 0%, rgba(215,94,38,1) 0%, rgba(210,62,78,1) 50%)'
+
+
             }
             return(
                 <footer style={styles}>
-                    Footer
+                    <div>
+                        Legal cosas
+                    </div>
+                    <div>
+                        AnimeList BY Sebastian
+                    </div>
+                    <div>
+                        Follow me
+                    </div>
                 </footer>
             )
         }
@@ -94,16 +160,16 @@
         
         const App = () => {         
             const styles={
-                width:'100%',
+                width:'80%',
                 height:'100%',
                 display: 'flex',
                 alignItems:'center',
-                flexDirection:'column'
+                flexDirection:'column',
+                backgroundColor:'violet',
+                padding:'5px',
+                borderRadius: '20px',
+                backgroundColor: 'rgba(238, 130, 238, 0.9)',
             };
-            
-            React.useEffect(()=>{
-                getPosts()
-            },[]);
 
             return (
                 <main style={styles}>
