@@ -6,15 +6,11 @@
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <style>
-        .counter { font-size: 20px; }
-    </style>
 </head>
 <body style="background-image: url(./gibhli.gif); background-size:cover; background-repeat: no-repeat;">
     <div id="root" style="display: flex; justify-content: center;"></div>
     <script type="text/babel">
-        import PropTypes from 'prop-types';
-        
+
         const Head=()=>{
             const styles={
                 width:'100%',
@@ -37,7 +33,8 @@
             const styles={
                 marginBottom: '10px',
                 backgroundColor: 'rgb(169, 14, 196)',
-                width: '50%',
+                borderRadius:'20px',
+                width: '90%',
                 display: 'flex',
                 padding:'20px',
                 justifyContent: 'space-between',     
@@ -96,9 +93,15 @@
             }
 
             const [posts, setPosts] = React.useState([]);
+            const [error, setError] = React.useState(null);
 
             const getPosts = async () => {
                 const apiResponse = await fetch('https://api.tiburoncin.lat/22295/posts')
+                if (!apiResponse.ok) {
+                    throw new Error('Error al obtener los datos del API')
+                    alert('Error de comunicación con el API. Por favor, inténtalo de nuevo más tarde.')
+                    setError('Error de comunicación con el API. Por favor, inténtalo de nuevo más tarde.')
+                }
                 const jsonPosts = await apiResponse.json() 
                 console.log(jsonPosts) 
                 setPosts(jsonPosts)
