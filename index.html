@@ -6,10 +6,26 @@
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/prop-types@15.7.2/prop-types.min.js"></script>
+
 </head>
-<body style="background-image: url(./gibhli.gif); background-size:cover; background-repeat: no-repeat;">
-    <div id="root" style="display: flex; justify-content: center;"></div>
+<body>
+    <div id="root"></div>
     <script type="text/babel">
+        const { Suspense } = React;
+
+        const { posts, setPosts, setError } = PropTypes;
+
+        const rootStyles = {
+            display: 'flex',
+            justifyContent: 'center',
+        };
+
+        const bodyStyles = {
+            backgroundImage: 'url(./gibhli.gif)',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+        };
 
         const Head=()=>{
             const styles={
@@ -18,9 +34,9 @@
                 marginBottom: '10px',
                 display: 'flex',
                 justifyContent:'center',
-                background: 'rgb(1,117,255)',
-                background: 'linear-gradient(90deg, rgba(1,117,255,1) 20%, rgba(74,21,221,1) 64%)',
+                background: '#192e52',
                 borderRadius: '20px',
+                fontColor: 'white'
             }
             return(
                 <header style={styles}>
@@ -32,12 +48,12 @@
         const Nav = ()=> {
             const styles={
                 marginBottom: '10px',
-                backgroundColor: 'rgb(169, 14, 196)',
+                backgroundColor: '#2a7ee6',
                 borderRadius:'20px',
                 width: '90%',
                 display: 'flex',
                 padding:'20px',
-                justifyContent: 'space-between',     
+                justifyContent: 'space-around',     
             }
             return(
                 <nav style={styles}>
@@ -106,19 +122,18 @@
                 console.log(jsonPosts) 
                 setPosts(jsonPosts)
             }   
-
                         
             React.useEffect(()=>{
                 getPosts()
             },[]);
 
-
-            //debugger;
             if (posts.length === 0){
                 return (
-                    <ul>
-                        Loading...
-                    </ul>
+                    <div>
+                        <h2>
+                            No hay Posts
+                        </h2>
+                    </div>
                 )
             }
 
@@ -131,6 +146,18 @@
             )
         }
 
+        Posts.propTypes = {
+            posts: PropTypes.array.isRequired,
+            setPosts: PropTypes.func.isRequired,
+            setError: PropTypes.func.isRequired
+        };
+
+        const Loading = ()=>{ 
+            return(
+                <div>Cargando datos...</div>
+            )
+        };
+
         const Footer = ()=> {
             const styles={
                 width:'97%',
@@ -139,18 +166,29 @@
                 borderRadius: '20px',
                 display: 'flex',
                 justifyContent:'space-between',
-                background: 'rgb(1,117,255)',
-                background: 'linear-gradient(90deg, rgba(1,117,255,1) 0%, rgba(215,94,38,1) 0%, rgba(210,62,78,1) 50%)'
-
-
+                textAling: 'center',
+                background: '#64b8f6',
             }
             return(
                 <footer style={styles}>
                     <div>
-                        Legal cosas
+                        <p>
+                            Legal cosas
+                        </p>
+                        <p>
+                            Legal cosas
+                        </p>
+                        <p>
+                            Legal cosas
+                        </p>
                     </div>
                     <div>
-                        AnimeList BY Sebastian
+                        <p>
+                            AnimeList BY Sebastian
+                        </p>
+                        <p>
+                            Nos reservamos los derechos de autor
+                        </p>
                     </div>
                     <div>
                         Follow me
@@ -171,18 +209,26 @@
                 backgroundColor:'violet',
                 padding:'5px',
                 borderRadius: '20px',
-                backgroundColor: 'rgba(238, 130, 238, 0.9)',
+                backgroundColor: '#96d2fa',
             };
 
             return (
                 <main style={styles}>
                     <Head/>
                     <Nav/>
-                    <Posts/>
+                    <Suspense fallback={<Loading/>}>
+                        <Posts/>
+                    </Suspense>
                     <Footer/>
                 </main>
             )
         }
+
+        const rootElement = document.getElementById('root');
+        const bodyElement = document.body;
+
+        Object.assign(rootElement.style, rootStyles);
+        Object.assign(bodyElement.style, bodyStyles);
 
         const root = ReactDOM.createRoot(document.getElementById('root'))
         root.render(<App />)
